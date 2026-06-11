@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://krishhomeappliances.in/sitemap.xml',
+    sitemap: 'https://krishhomeappliances.com/sitemap.xml',
   };
 }

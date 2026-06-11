@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Krish Home Appliances | Genuine Spare Parts Shop & Multi-Brand Service',
     description: 'Nalasopara\'s ultimate hub for genuine home appliance spare parts. In-stock compressors, capacitors, fan motors, gas cylinders, and wiring for all major brands.',
-    url: 'https://krishhomeappliances.in',
+    url: 'https://krishhomeappliances.com',
     siteName: 'Krish Home Appliances',
     locale: 'en_IN',
     type: 'website',
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     description: 'Walk-in spare parts store & expert doorstep repair in Nalasopara East. AC, Fridge, Washing Machine — all major brands serviced.',
   },
   alternates: {
-    canonical: 'https://krishhomeappliances.in',
+    canonical: 'https://krishhomeappliances.com',
   },
-  metadataBase: new URL('https://krishhomeappliances.in'),
+  metadataBase: new URL('https://krishhomeappliances.com'),
   // TODO: Uncomment after registering on Google Search Console
   // verification: {
   //   google: 'YOUR_GOOGLE_VERIFICATION_CODE',
@@ -67,8 +67,8 @@ const jsonLd = {
   "@type": "LocalBusiness",
   "name": "Krish Home Appliances",
   "description": "Nalasopara's ultimate hub for genuine home appliance spare parts and multi-brand service centre.",
-  "url": "https://krishhomeappliances.in",
-  "image": "https://krishhomeappliances.in/opengraph-image",
+  "url": "https://krishhomeappliances.com",
+  "image": "https://krishhomeappliances.com/opengraph-image",
   "telephone": "+919867392552",
   "email": "Kphomeappliances57@gmail.com",
   "address": {

@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://krishhomeappliances.in',
+      url: 'https://krishhomeappliances.com',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1.0,
