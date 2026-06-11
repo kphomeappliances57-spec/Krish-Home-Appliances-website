@@ -130,8 +130,8 @@ const jsonLd = {
     {
       "@type": "Offer",
       "itemOffered": {
-        "@type": "Product",
-        "name": "Genuine Home Appliance Spare Parts",
+        "@type": "Service",
+        "name": "Genuine Home Appliance Spare Parts Sales",
         "description": "In-stock compressors, capacitors, copper piping, refrigerant gases, fan motors, PCB boards, and heavy-duty wiring from Polycab, Finolex, Havells."
       }
     }
