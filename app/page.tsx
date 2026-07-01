@@ -57,7 +57,7 @@ export default function KrishHomeAppliances() {
       
       {/* 1. Announcement Banner */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-primary text-white text-center py-2.5 px-4 text-xs sm:text-sm font-medium tracking-wide">
-        <span className="inline-block animate-pulse mr-2">🚀</span> Nalasopara’s Only Fully-Stocked Home Appliance Spare Parts Store – Launching July 1, 2026!
+        <span className="inline-block animate-pulse mr-2">🚀</span> Nalasopara’s Only Fully-Stocked Home Appliance Spare Parts Store – Opening Soon!
       </div>
 
       {/* 2. Header / Navigation */}
@@ -387,7 +387,7 @@ export default function KrishHomeAppliances() {
               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-              <span className="ml-2 font-semibold text-sm">Awaiting Reviews (Launching July 2026)</span>
+              <span className="ml-2 font-semibold text-sm">Awaiting Reviews (Opening Soon)</span>
             </div>
             <h2 className="font-serif text-3xl font-bold max-w-2xl mx-auto leading-tight text-foreground">Setting the new standard for local home appliance service in Palghar district.</h2>
          </div>
