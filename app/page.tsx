@@ -57,7 +57,7 @@ export default function KrishHomeAppliances() {
       
       {/* 1. Announcement Banner */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-primary text-white text-center py-2.5 px-4 text-xs sm:text-sm font-medium tracking-wide">
-        <span className="inline-block animate-pulse mr-2">🎉</span> Now Open! Nalasopara's Only Fully-Stocked Home Appliance Spare Parts Store – Walk In Today!
+        <span className="inline-block animate-pulse mr-2">🎉</span> Now Open! Nalasopara&apos;s Only Fully-Stocked Home Appliance Spare Parts Store – Walk In Today!
       </div>
 
       {/* 2. Header / Navigation */}
