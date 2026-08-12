@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Instrument_Serif, Plus_Jakarta_Sans } from 'next/font/google';
 import MobileActionBar from '@/components/MobileActionBar';
+import { StoreProvider } from '@/lib/storeContext';
 import './globals.css';
 
 const instrumentSerif = Instrument_Serif({
@@ -50,10 +51,6 @@ export const metadata: Metadata = {
     canonical: 'https://krishhomeappliances.com',
   },
   metadataBase: new URL('https://krishhomeappliances.com'),
-  // TODO: Uncomment after registering on Google Search Console
-  // verification: {
-  //   google: 'YOUR_GOOGLE_VERIFICATION_CODE',
-  // },
   other: {
     'geo.region': 'IN-MH',
     'geo.placename': 'Nalasopara East',
@@ -98,10 +95,7 @@ const jsonLd = {
     { "@type": "City", "name": "Dahisar" },
     { "@type": "City", "name": "Andheri" }
   ],
-  "sameAs": [
-    // TODO: Add Google Business Profile URL
-    // TODO: Add any social media profile URLs
-  ],
+  "sameAs": [],
   "makesOffer": [
     {
       "@type": "Offer",
@@ -148,15 +142,17 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         />
       </head>
       <body className="font-sans antialiased text-foreground bg-background" suppressHydrationWarning>
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none">
-          Skip to main content
-        </a>
-        <div id="main-content">
-          {children}
-        </div>
-        <MobileActionBar />
+        <StoreProvider>
+          <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none">
+            Skip to main content
+          </a>
+          <div id="main-content">
+            {children}
+          </div>
+          <MobileActionBar />
+        </StoreProvider>
       </body>
     </html>
-
   );
 }
+
