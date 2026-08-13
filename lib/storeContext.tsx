@@ -1,12 +1,11 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, Category, QuoteItem, QuoteRequest, UserProfile, OrderStatus } from './types';
 import { INITIAL_PRODUCTS, INITIAL_CATEGORIES } from './initialData';
 import { isFirebaseConfigured, db, auth } from './firebase';
 import { 
   collection, 
-  getDocs, 
   addDoc, 
   doc, 
   updateDoc, 
@@ -55,7 +54,7 @@ interface StoreContextType {
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [categories] = useState<Category[]>(INITIAL_CATEGORIES);
   const [cart, setCart] = useState<QuoteItem[]>(() => {
     if (typeof window === 'undefined') return [];
@@ -71,7 +70,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isFirebaseActive] = useState<boolean>(() => isFirebaseConfigured());
   const [loading, setLoading] = useState<boolean>(() => isFirebaseConfigured());
 
-  // Real-time listener for Firebase Firestore ONLY
+  // Real-time listener for Firebase Firestore
   useEffect(() => {
     if (!isFirebaseActive) {
       return;
@@ -84,10 +83,16 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       snapshot.forEach((docSnap) => {
         loadedProducts.push({ id: docSnap.id, ...docSnap.data() } as Product);
       });
-      setProducts(loadedProducts);
+      // If Firestore has products, use them! Otherwise fall back to initial Excel products
+      if (loadedProducts.length > 0) {
+        setProducts(loadedProducts);
+      } else {
+        setProducts(INITIAL_PRODUCTS);
+      }
       setLoading(false);
     }, (error) => {
       console.error('Error listening to products:', error);
+      setProducts(INITIAL_PRODUCTS);
       setLoading(false);
     });
 
@@ -289,7 +294,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  // 1-Click Batch Seed Initial 25 Excel Products to Firestore
+  // Batch Seed Excel Products to Firestore
   const seedDatabase = async (): Promise<number> => {
     let count = 0;
     if (isFirebaseActive) {

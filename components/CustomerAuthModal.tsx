@@ -216,34 +216,7 @@ export default function CustomerAuthModal({ isOpen, onClose, onNavigateAdmin }: 
                 </button>
               </form>
 
-              {/* Demo Mode Quick Role Switcher for Testing */}
-              <div className="pt-4 border-t border-gray-100 space-y-2">
-                <div className="text-[11px] text-center text-gray-400 font-bold uppercase tracking-wider">
-                  ⚡ Quick Test Demo Access
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => {
-                      setDemoUser('admin');
-                      onClose();
-                    }}
-                    className="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-xl text-xs font-bold transition-all text-center"
-                  >
-                    👑 Test Admin
-                  </button>
-                  <button
-                    onClick={() => {
-                      setDemoUser('staff');
-                      onClose();
-                    }}
-                    className="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold transition-all text-center"
-                  >
-                    🛡️ Test Staff
-                  </button>
-                </div>
-              </div>
-
-              <div className="text-center text-xs text-gray-500">
+              <div className="text-center text-xs text-gray-500 pt-2 border-t border-gray-100">
                 {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
                 <button
                   onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
