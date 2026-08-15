@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, Category, QuoteItem, QuoteRequest, UserProfile, OrderStatus } from './types';
+import { Product, Category, QuoteItem, QuoteRequest, UserProfile, UserRole, OrderStatus } from './types';
 import { INITIAL_PRODUCTS, INITIAL_CATEGORIES } from './initialData';
 import { isFirebaseConfigured, db, auth } from './firebase';
 import { 
@@ -25,6 +25,7 @@ interface StoreContextType {
   categories: Category[];
   cart: QuoteItem[];
   quoteRequests: QuoteRequest[];
+  registeredUsers: UserProfile[];
   user: UserProfile | null;
   loading: boolean;
   isFirebaseActive: boolean;
@@ -66,6 +67,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   });
   const [quoteRequests, setQuoteRequests] = useState<QuoteRequest[]>([]);
+  const [registeredUsers, setRegisteredUsers] = useState<UserProfile[]>([]);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isFirebaseActive] = useState<boolean>(() => isFirebaseConfigured());
   const [loading, setLoading] = useState<boolean>(() => isFirebaseConfigured());
@@ -109,30 +111,65 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       console.error('Error listening to quotes:', error);
     });
 
+    // 3. Subscribe to Registered Users in Firestore
+    const usersRef = collection(db, 'users');
+    const unsubscribeUsers = onSnapshot(usersRef, (snapshot) => {
+      const loadedUsers: UserProfile[] = [];
+      snapshot.forEach((docSnap) => {
+        loadedUsers.push({ uid: docSnap.id, ...docSnap.data() } as UserProfile);
+      });
+      setRegisteredUsers(loadedUsers);
+    }, (error) => {
+      console.error('Error listening to users:', error);
+    });
+
     // 3. Listen to Auth State
     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         try {
+          const emailLower = (firebaseUser.email || '').toLowerCase();
+          const targetRole: UserRole = 
+            emailLower === 'admin@gmail.com' || emailLower === 'kphomeappliances57@gmail.com'
+              ? 'admin'
+              : emailLower === 'staff@gmail.com'
+              ? 'staff'
+              : 'customer';
+
           const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
           if (userDoc.exists()) {
-            setUser(userDoc.data() as UserProfile);
+            const existing = userDoc.data() as UserProfile;
+            if (targetRole !== 'customer' && existing.role !== targetRole) {
+              const updatedProfile = { ...existing, role: targetRole };
+              await setDoc(doc(db, 'users', firebaseUser.uid), updatedProfile);
+              setUser(updatedProfile);
+            } else {
+              setUser(existing);
+            }
           } else {
             const defaultProfile: UserProfile = {
               uid: firebaseUser.uid,
               email: firebaseUser.email || '',
               displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
-              role: firebaseUser.email === 'Kphomeappliances57@gmail.com' ? 'admin' : 'customer',
+              role: targetRole,
             };
             await setDoc(doc(db, 'users', firebaseUser.uid), defaultProfile);
             setUser(defaultProfile);
           }
         } catch (err) {
           console.error('Error fetching user profile:', err);
+          const emailLower = (firebaseUser.email || '').toLowerCase();
+          const targetRole: UserRole = 
+            emailLower === 'admin@gmail.com' || emailLower === 'kphomeappliances57@gmail.com'
+              ? 'admin'
+              : emailLower === 'staff@gmail.com'
+              ? 'staff'
+              : 'customer';
+
           setUser({
             uid: firebaseUser.uid,
             email: firebaseUser.email || '',
             displayName: firebaseUser.displayName || 'User',
-            role: 'customer',
+            role: targetRole,
           });
         }
       } else {
@@ -148,6 +185,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return () => {
       unsubscribeProducts();
       unsubscribeQuotes();
+      unsubscribeUsers();
       unsubscribeAuth();
     };
   }, [isFirebaseActive]);
@@ -336,6 +374,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         categories,
         cart,
         quoteRequests,
+        registeredUsers,
         user,
         loading,
         isFirebaseActive,

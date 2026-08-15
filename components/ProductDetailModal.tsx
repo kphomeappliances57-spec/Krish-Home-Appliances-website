@@ -57,16 +57,16 @@ export default function ProductDetailModal({ product, onClose, onOpenCart }: Pro
           initial={{ scale: 0.95, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
-          className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-8"
+          className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-auto sm:my-8 max-h-[90vh] flex flex-col"
         >
           {/* Header Bar */}
-          <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-background">
+          <div className="flex items-center justify-between p-4 sm:p-5 border-b border-gray-100 bg-background shrink-0">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold px-3 py-1 bg-primary/10 text-primary rounded-full uppercase tracking-wider">
+              <span className="text-[11px] sm:text-xs font-bold px-2.5 py-1 bg-primary/10 text-primary rounded-full uppercase tracking-wider">
                 {product.category}
               </span>
               {product.inStock && (
-                <span className="text-xs font-bold px-3 py-1 bg-success/10 text-success border border-success/20 rounded-full flex items-center gap-1">
+                <span className="text-[11px] sm:text-xs font-bold px-2.5 py-1 bg-success/10 text-success border border-success/20 rounded-full flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
                   In Stock
                 </span>
@@ -76,13 +76,14 @@ export default function ProductDetailModal({ product, onClose, onOpenCart }: Pro
             <button
               onClick={onClose}
               className="p-2 text-gray-400 hover:text-foreground hover:bg-gray-100 rounded-full transition-colors"
+              aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Modal Body */}
-          <div className="p-6 sm:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
+          <div className="p-4 sm:p-8 space-y-6 overflow-y-auto flex-1">
             <div className="flex flex-col md:flex-row gap-6">
               {/* Product Visual */}
               <div className="w-full md:w-1/2 aspect-square rounded-2xl bg-gray-100 border border-gray-200 overflow-hidden relative group">
@@ -166,7 +167,7 @@ export default function ProductDetailModal({ product, onClose, onOpenCart }: Pro
           </div>
 
           {/* Action Buttons Footer */}
-          <div className="p-5 border-t border-gray-100 bg-background flex flex-col sm:flex-row gap-3">
+          <div className="p-4 sm:p-5 border-t border-gray-100 bg-background flex flex-col sm:flex-row gap-3 shrink-0">
             <button
               onClick={handleAddToCart}
               className="flex-1 min-h-[50px] bg-white border-2 border-primary text-primary hover:bg-primary/5 font-bold rounded-xl flex items-center justify-center gap-2 text-sm transition-all"

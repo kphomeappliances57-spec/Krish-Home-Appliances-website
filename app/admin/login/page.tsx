@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
               <input
                 type="email"
                 required
-                placeholder="Kphomeappliances57@gmail.com"
+                placeholder="admin@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-3.5 py-2.5 bg-background border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"

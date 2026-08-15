@@ -20,12 +20,13 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
 
 export default function AdminPage() {
   const { 
-    products, quoteRequests, user, isFirebaseActive, 
+    products, quoteRequests, registeredUsers, user, isFirebaseActive, 
     addProduct, updateProduct, deleteProduct, updateQuoteStatus, 
-    seedDatabase, logout, setDemoUser 
+    logout 
   } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'quotes' | 'products' | 'analytics'>('quotes');
+  const [activeTab, setActiveTab] = useState<'quotes' | 'products' | 'customers' | 'analytics'>('quotes');
+  const [customerSearch, setCustomerSearch] = useState('');
   const [quoteSearch, setQuoteSearch] = useState('');
   const [quoteStatusFilter, setQuoteStatusFilter] = useState<string>('all');
   
@@ -48,8 +49,6 @@ export default function AdminPage() {
 
   const [productSearch, setProductSearch] = useState('');
   const [productCatFilter, setProductCatFilter] = useState('All');
-  const [isSeeding, setIsSeeding] = useState(false);
-  const [seedMessage, setSeedMessage] = useState('');
 
   // Access check
   const isAdmin = user?.role === 'admin';
@@ -87,6 +86,20 @@ export default function AdminPage() {
       return true;
     });
   }, [products, productCatFilter, productSearch]);
+
+  // Filtered Customers
+  const filteredCustomers = useMemo(() => {
+    return registeredUsers.filter((u) => {
+      if (!customerSearch.trim()) return true;
+      const q = customerSearch.toLowerCase();
+      const matchName = (u.displayName || '').toLowerCase().includes(q);
+      const matchEmail = (u.email || '').toLowerCase().includes(q);
+      const matchPhone = (u.phone || '').toLowerCase().includes(q);
+      const matchRole = (u.role || '').toLowerCase().includes(q);
+      const matchUid = (u.uid || '').toLowerCase().includes(q);
+      return matchName || matchEmail || matchPhone || matchRole || matchUid;
+    });
+  }, [registeredUsers, customerSearch]);
 
   // Handlers for Products
   const handleOpenAddModal = () => {
@@ -146,19 +159,6 @@ export default function AdminPage() {
     }
   };
 
-  const handleSeed = async () => {
-    setIsSeeding(true);
-    try {
-      const count = await seedDatabase();
-      setSeedMessage(`Successfully seeded ${count} products!`);
-      setTimeout(() => setSeedMessage(''), 4000);
-    } catch (e) {
-      setSeedMessage('Seeding failed');
-    } finally {
-      setIsSeeding(false);
-    }
-  };
-
   const replyCustomerWhatsApp = (req: QuoteRequest) => {
     let msg = `Hi ${req.customerName}, this is Krish Home Appliances regarding your Quote Request #${req.id}.\n\n`;
     msg += `We have checked our store stock for your requested items:\n`;
@@ -179,39 +179,26 @@ export default function AdminPage() {
           </div>
 
           <div>
-            <h2 className="font-serif text-3xl font-bold text-foreground mb-2">Control Panel Access</h2>
-            <p className="text-xs text-gray-500">
+            <h2 className="font-serif text-3xl font-bold text-foreground mb-2">Control Panel Access Required</h2>
+            <p className="text-xs text-gray-500 mb-4">
               This area is restricted to Krish Home Appliances authorized Admin and Staff personnel.
             </p>
+            <Link
+              href="/admin/login"
+              className="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-bold text-xs rounded-xl shadow-md transition-all"
+            >
+              Sign In with Authorized Account
+            </Link>
           </div>
 
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-xs text-blue-800 space-y-2 text-left">
-            <div className="font-bold flex items-center gap-1">
-              <AlertCircle className="w-4 h-4" /> Quick Testing Mode
-            </div>
-            <p>Select a test role below to preview the Control Panel dashboard:</p>
-            <div className="grid grid-cols-2 gap-2 pt-2">
-              <button
-                onClick={() => setDemoUser('admin')}
-                className="py-2.5 bg-primary text-white rounded-xl font-bold text-xs hover:bg-primary/90 transition-all text-center shadow-xs"
-              >
-                👑 Login as Admin
-              </button>
-              <button
-                onClick={() => setDemoUser('staff')}
-                className="py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-accent/90 transition-all text-center shadow-xs"
-              >
-                🛡️ Login as Staff
-              </button>
-            </div>
+          <div className="pt-2">
+            <Link
+              href="/"
+              className="inline-flex items-center text-xs font-bold text-gray-500 hover:text-foreground gap-1"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to Storefront
+            </Link>
           </div>
-
-          <Link
-            href="/"
-            className="inline-flex items-center text-xs font-bold text-gray-500 hover:text-foreground gap-1"
-          >
-            <ArrowLeft className="w-4 h-4" /> Back to Storefront
-          </Link>
         </div>
       </main>
     );
@@ -243,18 +230,6 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            {isAdmin && (
-              <button
-                onClick={handleSeed}
-                disabled={isSeeding}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all"
-                title="Seed 25 default products from Excel"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${isSeeding ? 'animate-spin' : ''}`} />
-                Seed Excel Data
-              </button>
-            )}
-
             <Link
               href="/"
               className="px-4 py-2 bg-white border border-gray-300 text-gray-700 hover:text-primary text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all"
@@ -270,12 +245,6 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
-
-        {seedMessage && (
-          <div className="mb-6 p-4 bg-success/10 border border-success/30 text-success rounded-2xl text-xs font-bold animate-pulse">
-            {seedMessage}
-          </div>
-        )}
 
         {/* Dashboard Metrics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -335,10 +304,10 @@ export default function AdminPage() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex border-b border-gray-200 mb-8 bg-white px-4 pt-3 rounded-2xl border">
+        <div className="flex border-b border-gray-200 mb-8 bg-white px-4 pt-3 rounded-2xl border overflow-x-auto">
           <button
             onClick={() => setActiveTab('quotes')}
-            className={`pb-3 px-6 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`pb-3 px-5 text-sm font-bold border-b-2 transition-all flex items-center gap-2 shrink-0 ${
               activeTab === 'quotes'
                 ? 'border-primary text-primary'
                 : 'border-transparent text-gray-500 hover:text-foreground'
@@ -350,7 +319,7 @@ export default function AdminPage() {
           {isAdmin && (
             <button
               onClick={() => setActiveTab('products')}
-              className={`pb-3 px-6 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+              className={`pb-3 px-5 text-sm font-bold border-b-2 transition-all flex items-center gap-2 shrink-0 ${
                 activeTab === 'products'
                   ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-foreground'
@@ -361,8 +330,19 @@ export default function AdminPage() {
           )}
 
           <button
+            onClick={() => setActiveTab('customers')}
+            className={`pb-3 px-5 text-sm font-bold border-b-2 transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === 'customers'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-gray-500 hover:text-foreground'
+            }`}
+          >
+            <Users className="w-4 h-4" /> Registered Customers ({registeredUsers.length})
+          </button>
+
+          <button
             onClick={() => setActiveTab('analytics')}
-            className={`pb-3 px-6 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`pb-3 px-5 text-sm font-bold border-b-2 transition-all flex items-center gap-2 shrink-0 ${
               activeTab === 'analytics'
                 ? 'border-primary text-primary'
                 : 'border-transparent text-gray-500 hover:text-foreground'
@@ -611,7 +591,128 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* TAB 3: SYSTEM INFO & ROLES */}
+        {/* TAB 3: REGISTERED CUSTOMERS LIST */}
+        {activeTab === 'customers' && (
+          <div className="space-y-6">
+            {/* Top Bar / Search */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-200">
+              <div className="relative w-full sm:w-96">
+                <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
+                <input
+                  type="text"
+                  placeholder="Search customer name, email, or phone..."
+                  value={customerSearch}
+                  onChange={(e) => setCustomerSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-background border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 text-xs font-bold text-gray-600">
+                <Users className="w-4 h-4 text-primary" />
+                <span>Showing {filteredCustomers.length} of {registeredUsers.length} Account(s)</span>
+              </div>
+            </div>
+
+            {/* Customers Table Container */}
+            <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-xs">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs text-gray-700">
+                  <thead className="bg-background border-b border-gray-200 uppercase text-[11px] font-bold text-gray-500 tracking-wider">
+                    <tr>
+                      <th className="px-6 py-4">Customer Name</th>
+                      <th className="px-6 py-4">Email Address</th>
+                      <th className="px-6 py-4">Assigned Role</th>
+                      <th className="px-6 py-4">Quote Requests</th>
+                      <th className="px-6 py-4">Phone / WhatsApp</th>
+                      <th className="px-6 py-4">Account ID</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 font-medium">
+                    {filteredCustomers.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-12 text-center text-gray-400">
+                          <Users className="w-10 h-10 mx-auto mb-2 opacity-40" />
+                          <p className="text-sm font-bold text-gray-600">No registered customer accounts found</p>
+                          <p className="text-xs text-gray-400 mt-1">Registered customer profiles will automatically appear here once users log in or submit quotes.</p>
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredCustomers.map((cust) => {
+                        const userQuoteCount = quoteRequests.filter(q => q.userId === cust.uid || q.customerEmail === cust.email).length;
+                        return (
+                          <tr key={cust.uid} className="hover:bg-gray-50/80 transition-colors">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-sm shrink-0">
+                                  {cust.displayName ? cust.displayName.charAt(0).toUpperCase() : 'U'}
+                                </div>
+                                <div>
+                                  <span className="font-bold text-foreground block text-sm">{cust.displayName || 'Customer'}</span>
+                                  {cust.createdAt && (
+                                    <span className="text-[10px] text-gray-400">Joined {new Date(cust.createdAt).toLocaleDateString()}</span>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 font-mono text-gray-600">
+                              {cust.email}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                                cust.role === 'admin'
+                                  ? 'bg-purple-100 text-purple-700 border border-purple-200'
+                                  : cust.role === 'staff'
+                                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                                  : 'bg-green-100 text-green-700 border border-green-200'
+                              }`}>
+                                {cust.role}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 font-bold text-foreground">
+                              <span className="px-2.5 py-1 bg-gray-100 rounded-lg text-gray-700">
+                                📦 {userQuoteCount} Request(s)
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              {cust.phone ? (
+                                <div className="flex items-center gap-2">
+                                  <a
+                                    href={`https://wa.me/${cust.phone.replace(/[^0-9]/g, '')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-1.5 bg-success/10 text-success hover:bg-success hover:text-white rounded-lg transition-colors"
+                                    title="WhatsApp Customer"
+                                  >
+                                    <WhatsappIcon className="w-4 h-4" />
+                                  </a>
+                                  <a
+                                    href={`tel:${cust.phone}`}
+                                    className="p-1.5 bg-accent/10 text-accent hover:bg-accent hover:text-white rounded-lg transition-colors"
+                                    title="Call Customer"
+                                  >
+                                    <PhoneCall className="w-4 h-4" />
+                                  </a>
+                                  <span className="font-mono text-gray-700">{cust.phone}</span>
+                                </div>
+                              ) : (
+                                <span className="text-gray-400 italic">Not provided</span>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 font-mono text-[11px] text-gray-400">
+                              {cust.uid.slice(0, 12)}...
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: SYSTEM INFO & ROLES */}
         {activeTab === 'analytics' && (
           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xs space-y-6">
             <h3 className="font-serif text-2xl font-bold text-foreground">Control Panel Role &amp; Permission Structure</h3>
