@@ -30,8 +30,16 @@ export default function ProductCatalog({ onOpenCart }: ProductCatalogProps) {
 
   // Extract unique category names & brands
   const categoriesList = useMemo(() => {
-    const cats = Array.from(new Set(products.map((p) => p.category)));
-    return ['All', ...cats];
+    const set = new Set<string>();
+    set.add('All');
+    products.forEach((p) => {
+      let cat = p.category || 'Electrical';
+      if (cat.toLowerCase().includes('hvac')) {
+        cat = cat.toLowerCase().includes('tool') ? 'Service Tools' : 'Electrical';
+      }
+      set.add(cat);
+    });
+    return Array.from(set);
   }, [products]);
 
   const brandsList = useMemo(() => {
@@ -48,8 +56,14 @@ export default function ProductCatalog({ onOpenCart }: ProductCatalogProps) {
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       // Category filter
-      if (selectedCategory !== 'All' && product.category !== selectedCategory) {
-        return false;
+      if (selectedCategory !== 'All') {
+        let pCat = product.category || 'Electrical';
+        if (pCat.toLowerCase().includes('hvac')) {
+          pCat = pCat.toLowerCase().includes('tool') ? 'Service Tools' : 'Electrical';
+        }
+        if (pCat !== selectedCategory) {
+          return false;
+        }
       }
       // Brand filter
       if (selectedBrand !== 'All' && product.brand !== selectedBrand) {
@@ -116,7 +130,7 @@ export default function ProductCatalog({ onOpenCart }: ProductCatalogProps) {
           </div>
 
           {/* Filters Row */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-200/80">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-gray-200/80">
             {/* Category Pills */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full no-scrollbar">
               <span className="text-xs font-bold text-gray-500 uppercase tracking-wider shrink-0 flex items-center gap-1 mr-1">
@@ -138,12 +152,12 @@ export default function ProductCatalog({ onOpenCart }: ProductCatalogProps) {
             </div>
 
             {/* Brand & Stock Filters */}
-            <div className="flex items-center gap-3 shrink-0 ml-auto">
+            <div className="flex items-center justify-between sm:justify-end gap-2.5 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0">
               {brandsList.length > 1 && (
                 <select
                   value={selectedBrand}
                   onChange={(e) => setSelectedBrand(e.target.value)}
-                  className="px-3 py-1.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex-1 sm:flex-initial min-w-[120px] max-w-[160px] px-3 py-2 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary truncate"
                 >
                   <option value="All">All Brands</option>
                   {brandsList.filter((b) => b !== 'All').map((b) => (
@@ -154,28 +168,28 @@ export default function ProductCatalog({ onOpenCart }: ProductCatalogProps) {
                 </select>
               )}
 
-              <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer bg-white px-3 py-1.5 border border-gray-300 rounded-xl">
+              <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer bg-white px-3 py-2 border border-gray-300 rounded-xl whitespace-nowrap shrink-0">
                 <input
                   type="checkbox"
                   checked={onlyInStock}
                   onChange={(e) => setOnlyInStock(e.target.checked)}
                   className="rounded text-primary focus:ring-primary"
                 />
-                In Stock Only
+                <span>In Stock Only</span>
               </label>
             </div>
           </div>
         </div>
 
         {/* Results Counter & Store Pickup Notice */}
-        <div className="flex items-center justify-between mb-6 px-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 px-1">
           <p className="text-xs sm:text-sm text-gray-500 font-medium">
             Showing <strong className="text-foreground">{filteredProducts.length}</strong> product(s)
             {selectedCategory !== 'All' && ` in "${selectedCategory}"`}
           </p>
 
-          <span className="text-xs font-semibold text-accent flex items-center gap-1.5 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-            <Store className="w-3.5 h-3.5" /> Store Pickup Only (Kanti Avenue, Nalasopara East)
+          <span className="text-xs font-semibold text-accent flex items-center gap-1.5 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 self-start sm:self-auto">
+            <Store className="w-3.5 h-3.5 shrink-0" /> Store Pickup Only (Kanti Avenue, Nalasopara East)
           </span>
         </div>
 
@@ -220,12 +234,12 @@ export default function ProductCatalog({ onOpenCart }: ProductCatalogProps) {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   
-                  <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold text-gray-700 uppercase tracking-wider shadow-xs">
+                  <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold text-gray-700 uppercase tracking-wider shadow-xs max-w-[55%] truncate">
                     {product.category}
                   </div>
 
                   {product.inStock && (
-                    <div className="absolute top-2 right-2 bg-success text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center shadow-xs">
+                    <div className="absolute top-2 right-2 bg-success text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center shadow-xs shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-white mr-1 animate-pulse" />
                       In Stock
                     </div>

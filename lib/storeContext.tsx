@@ -83,7 +83,25 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const unsubscribeProducts = onSnapshot(prodsRef, (snapshot) => {
       const loadedProducts: Product[] = [];
       snapshot.forEach((docSnap) => {
-        loadedProducts.push({ id: docSnap.id, ...docSnap.data() } as Product);
+        const raw = docSnap.data() as Product;
+        let cleanCat = raw.category || 'Electrical';
+        if (cleanCat.toLowerCase().includes('hvac')) {
+          cleanCat = cleanCat.toLowerCase().includes('tool') ? 'Service Tools' : 'Electrical';
+        }
+        const cleanDesc = (raw.description || '').replace(/HVAC/gi, 'AC & Appliance');
+        const cleanApp = (raw.application || '').replace(/HVAC/gi, 'AC & Appliance');
+        const cleanName = (raw.name || '').replace(/HVAC/gi, 'AC & Appliance');
+        const cleanType = (raw.type || '').replace(/HVAC/gi, 'AC Service Tool');
+
+        loadedProducts.push({
+          ...raw,
+          id: docSnap.id,
+          category: cleanCat,
+          name: cleanName,
+          type: cleanType,
+          description: cleanDesc,
+          application: cleanApp,
+        });
       });
       // If Firestore has products, use them! Otherwise fall back to initial Excel products
       if (loadedProducts.length > 0) {
