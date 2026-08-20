@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, Category, QuoteItem, QuoteRequest, UserProfile, UserRole, OrderStatus } from './types';
-import { INITIAL_PRODUCTS, INITIAL_CATEGORIES } from './initialData';
+import { INITIAL_PRODUCTS, INITIAL_CATEGORIES, PRODUCT_IMAGE_MAP } from './initialData';
 import { isFirebaseConfigured, db, auth } from './firebase';
 import { 
   collection, 
@@ -93,6 +93,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const cleanName = (raw.name || '').replace(/HVAC/gi, 'AC & Appliance');
         const cleanType = (raw.type || '').replace(/HVAC/gi, 'AC Service Tool');
 
+        const key = raw.productId || raw.id || '';
+        const mappedImg = PRODUCT_IMAGE_MAP[key] || PRODUCT_IMAGE_MAP['prod-' + key] || PRODUCT_IMAGE_MAP[key.replace('prod-', '')];
+        let imgUrl = raw.imageUrl;
+        if (!imgUrl || imgUrl.includes('unsplash.com') || mappedImg) {
+          imgUrl = mappedImg || imgUrl || '/product-img/Filter drier.jpeg';
+        }
+
         loadedProducts.push({
           ...raw,
           id: docSnap.id,
@@ -101,6 +108,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           type: cleanType,
           description: cleanDesc,
           application: cleanApp,
+          imageUrl: imgUrl,
         });
       });
       // If Firestore has products, use them! Otherwise fall back to initial Excel products

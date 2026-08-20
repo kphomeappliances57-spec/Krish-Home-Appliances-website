@@ -11,6 +11,59 @@ export const INITIAL_CATEGORIES: Category[] = [
   { id: 'accessories', name: 'Accessories & Consumables', slug: 'accessories', icon: 'ShieldCheck' },
 ];
 
+export const PRODUCT_IMAGE_MAP: Record<string, string> = {
+  '1': '/product-img/Filter drier.jpeg',
+  'prod-1': '/product-img/Filter drier.jpeg',
+  '2': '/product-img/Cylinder valve 134.jpeg',
+  'prod-2': '/product-img/Cylinder valve 134.jpeg',
+  '3': '/product-img/Nrv.jpeg',
+  'prod-3': '/product-img/Nrv.jpeg',
+  '4': '/product-img/Haier semi automatic timers 45 min 350.jpeg',
+  'prod-4': '/product-img/Haier semi automatic timers 45 min 350.jpeg',
+  '5': '/product-img/Haier semi automatic 15 min timer 250.jpeg',
+  'prod-5': '/product-img/Haier semi automatic 15 min timer 250.jpeg',
+  '6': '/product-img/Samsung 35 min timer.jpeg',
+  'prod-6': '/product-img/Samsung 35 min timer.jpeg',
+  '7': '/product-img/Lg inverter pcb single door pcb original.jpeg',
+  'prod-7': '/product-img/Lg inverter pcb single door pcb original.jpeg',
+  '8': '/product-img/All types of thermostats available 200.jpeg',
+  'prod-8': '/product-img/All types of thermostats available 200.jpeg',
+  '9': '/product-img/Outdoor valve straight.jpeg',
+  'prod-9': '/product-img/Outdoor valve straight.jpeg',
+  '10': '/product-img/Outdoor valve bend.jpeg',
+  'prod-10': '/product-img/Outdoor valve bend.jpeg',
+  '11': '/product-img/Running capacitors.jpeg',
+  'prod-11': '/product-img/Running capacitors.jpeg',
+  '12': '/product-img/Running capacitors (2).jpeg',
+  'prod-12': '/product-img/Running capacitors (2).jpeg',
+  '13': '/product-img/Original refrigerator timer.jpeg',
+  'prod-13': '/product-img/Original refrigerator timer.jpeg',
+  '14': '/product-img/Top loading automatic drain pumps.jpeg',
+  'prod-14': '/product-img/Top loading automatic drain pumps.jpeg',
+  '15': '/product-img/To loading washing machine inlet valve.jpeg',
+  'prod-15': '/product-img/To loading washing machine inlet valve.jpeg',
+  '16': '/product-img/Pully belts original.jpeg',
+  'prod-16': '/product-img/Pully belts original.jpeg',
+  '17': '/product-img/Top loading automatic washing machine hubs.jpeg',
+  'prod-17': '/product-img/Top loading automatic washing machine hubs.jpeg',
+  '18': '/product-img/Drain Bello for semi automatic washing machine.jpeg',
+  'prod-18': '/product-img/Drain Bello for semi automatic washing machine.jpeg',
+  '19': '/product-img/Single manifold gauge.jpeg',
+  'prod-19': '/product-img/Single manifold gauge.jpeg',
+  '20': '/product-img/Single and double pole contractor.jpeg',
+  'prod-20': '/product-img/Single and double pole contractor.jpeg',
+  '21': '/product-img/Outdoor valve bend.jpeg',
+  'prod-21': '/product-img/Outdoor valve bend.jpeg',
+  '22': '/product-img/Samsung safety switch.jpeg',
+  'prod-22': '/product-img/Samsung safety switch.jpeg',
+  '23': '/product-img/Original Gas cylinders.jpeg',
+  'prod-23': '/product-img/Original Gas cylinders.jpeg',
+  '24': '/product-img/Cartoon insulation and non stick tapes available.jpeg',
+  'prod-24': '/product-img/Cartoon insulation and non stick tapes available.jpeg',
+  '25': '/product-img/Single and double pole contractor.jpeg',
+  'prod-25': '/product-img/Single and double pole contractor.jpeg',
+};
+
 export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'prod-1',
@@ -26,7 +79,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Filter drier.jpeg'
   },
   {
     id: 'prod-2',
@@ -42,7 +95,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Cylinder valve 134.jpeg'
   },
   {
     id: 'prod-3',
@@ -58,7 +111,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Nrv.jpeg'
   },
   {
     id: 'prod-4',
@@ -74,7 +127,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Haier semi automatic timers 45 min 350.jpeg'
   },
   {
     id: 'prod-5',
@@ -90,7 +143,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Haier semi automatic 15 min timer 250.jpeg'
   },
   {
     id: 'prod-6',
@@ -106,7 +159,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Samsung 35 min timer.jpeg'
   },
   {
     id: 'prod-7',
@@ -122,7 +175,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Lg inverter pcb single door pcb original.jpeg'
   },
   {
     id: 'prod-8',
@@ -138,7 +191,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/All types of thermostats available 200.jpeg'
   },
   {
     id: 'prod-9',
@@ -154,7 +207,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Outdoor valve straight.jpeg'
   },
   {
     id: 'prod-10',
@@ -170,7 +223,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Outdoor valve bend.jpeg'
   },
   {
     id: 'prod-11',
@@ -186,7 +239,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Running capacitors.jpeg'
   },
   {
     id: 'prod-12',
@@ -202,7 +255,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Running capacitors (2).jpeg'
   },
   {
     id: 'prod-13',
@@ -218,7 +271,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Original refrigerator timer.jpeg'
   },
   {
     id: 'prod-14',
@@ -234,7 +287,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Top loading automatic drain pumps.jpeg'
   },
   {
     id: 'prod-15',
@@ -250,7 +303,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/To loading washing machine inlet valve.jpeg'
   },
   {
     id: 'prod-16',
@@ -266,7 +319,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Pully belts original.jpeg'
   },
   {
     id: 'prod-17',
@@ -282,7 +335,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Top loading automatic washing machine hubs.jpeg'
   },
   {
     id: 'prod-18',
@@ -298,7 +351,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Drain Bello for semi automatic washing machine.jpeg'
   },
   {
     id: 'prod-19',
@@ -314,7 +367,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Set',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Single manifold gauge.jpeg'
   },
   {
     id: 'prod-20',
@@ -330,7 +383,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Single and double pole contractor.jpeg'
   },
   {
     id: 'prod-21',
@@ -346,7 +399,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Outdoor valve bend.jpeg'
   },
   {
     id: 'prod-22',
@@ -362,7 +415,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Samsung safety switch.jpeg'
   },
   {
     id: 'prod-23',
@@ -378,7 +431,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Piece',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Original Gas cylinders.jpeg'
   },
   {
     id: 'prod-24',
@@ -394,7 +447,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Roll',
     featured: false,
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Cartoon insulation and non stick tapes available.jpeg'
   },
   {
     id: 'prod-25',
@@ -410,6 +463,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     inStock: true,
     unit: 'Roll',
     featured: true,
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60'
+    imageUrl: '/product-img/Single and double pole contractor.jpeg'
   }
 ];

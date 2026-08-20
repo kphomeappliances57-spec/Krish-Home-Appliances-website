@@ -5,10 +5,13 @@ import { useStore } from '@/lib/storeContext';
 import { Product, QuoteRequest, OrderStatus } from '@/lib/types';
 import { INITIAL_CATEGORIES } from '@/lib/initialData';
 import Link from 'next/link';
+import { storage, isFirebaseConfigured } from '@/lib/firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { 
   LayoutDashboard, Package, ShoppingCart, Users, Plus, Edit2, 
   Trash2, Check, X, Search, Filter, RefreshCw, PhoneCall, 
-  Store, ShieldCheck, ArrowLeft, Eye, MessageSquare, AlertCircle 
+  Store, ShieldCheck, ArrowLeft, Eye, MessageSquare, AlertCircle,
+  Upload, Image as ImageIcon, Loader2
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -49,6 +52,67 @@ export default function AdminPage() {
 
   const [productSearch, setProductSearch] = useState('');
   const [productCatFilter, setProductCatFilter] = useState('All');
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [uploadError, setUploadError] = useState<string>('');
+
+  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError('');
+    setUploadProgress(0);
+
+    if (isFirebaseConfigured()) {
+      try {
+        const storageRef = ref(storage, `products/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadProgress(Math.round(progress));
+          },
+          (error) => {
+            console.error('Upload error:', error);
+            setUploadError('Storage upload error. Converting to local preview...');
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              if (event.target?.result) {
+                setFormData((prev) => ({ ...prev, imageUrl: event.target!.result as string }));
+              }
+              setUploadProgress(null);
+            };
+            reader.readAsDataURL(file);
+          },
+          async () => {
+            const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            setFormData((prev) => ({ ...prev, imageUrl: downloadUrl }));
+            setUploadProgress(null);
+          }
+        );
+      } catch (err: any) {
+        console.error(err);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target?.result) {
+            setFormData((prev) => ({ ...prev, imageUrl: event.target!.result as string }));
+          }
+          setUploadProgress(null);
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setFormData((prev) => ({ ...prev, imageUrl: event.target!.result as string }));
+        }
+        setUploadProgress(null);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Access check
   const isAdmin = user?.role === 'admin';
@@ -840,15 +904,67 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Image URL</label>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-background border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:outline-none"
-                />
+              {/* Product Image Section */}
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Product Image (Firebase Storage Upload &amp; Preview)
+                </label>
+
+                <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-gray-50 border border-gray-200 rounded-2xl">
+                  {/* Thumbnail Preview */}
+                  <div className="w-20 h-20 rounded-xl bg-white border border-gray-300 overflow-hidden shrink-0 relative flex items-center justify-center shadow-xs">
+                    {formData.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={formData.imageUrl}
+                        alt="Product preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <ImageIcon className="w-8 h-8 text-gray-300" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-2 w-full">
+                    {/* Direct File Upload Button */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <label className="cursor-pointer px-4 py-2 bg-primary hover:bg-primary/90 text-white font-bold text-xs rounded-xl flex items-center gap-2 shadow-xs transition-all">
+                        {uploadProgress !== null ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Uploading ({uploadProgress}%)</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>Upload Image File</span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageFileUpload}
+                          disabled={uploadProgress !== null}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-[11px] text-gray-400 font-medium">Supports JPG, PNG, WEBP</span>
+                    </div>
+
+                    {uploadError && (
+                      <p className="text-[11px] text-amber-600 font-medium">{uploadError}</p>
+                    )}
+
+                    {/* Or Manual URL Input */}
+                    <input
+                      type="text"
+                      placeholder="Or paste image URL / local path (e.g. /product-img/Filter drier.jpeg)"
+                      value={formData.imageUrl}
+                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 pt-2">
