@@ -7,7 +7,7 @@ import { ChevronDown, HelpCircle, MessageCircleQuestion } from 'lucide-react';
 const faqs = [
   {
     question: "Can I walk in and buy parts directly?",
-    answer: "Absolutely. We are first and foremost a fully-stocked retail and wholesale spare parts shop. You can walk into our Kanti Avenue store in Nalasopara East anytime between 10:00 AM and 10:00 PM to purchase genuine compressors, capacitors, copper pipes, gases, and more right over the counter."
+    answer: "Absolutely. We are first and foremost a fully-stocked retail and wholesale spare parts shop. You can walk into our Kanti Avenue store in Nalasopara East anytime between 10:00 AM and 6:00 PM to purchase genuine compressors, capacitors, copper pipes, gases, and more right over the counter."
   },
   {
     question: "Are you an authorized brand service centre or a multi-brand specialist?",

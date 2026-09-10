@@ -75,7 +75,7 @@ export default function Navbar() {
               {/* Hours / Pickup Tag (Desktop) */}
               <div className="hidden xl:flex items-center text-xs font-semibold text-gray-600 border-r border-gray-200 pr-4 gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-accent" />
-                <span>10 AM - 10 PM (Mon-Sun)</span>
+                <span>10 AM - 6 PM (Mon-Sun)</span>
               </div>
 
               {/* Quote Cart Button */}

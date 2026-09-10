@@ -124,7 +124,7 @@ export default function QuoteCartDrawer({ isOpen, onClose }: QuoteCartDrawerProp
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-left w-full text-xs text-gray-600 mb-6 space-y-1">
                     <div className="font-bold text-foreground mb-1">Pickup Location:</div>
                     <p>Krish Home Appliances, Shop No 1, D Wing, Kanti Avenue, Next to Capital Mall, Nalasopara East.</p>
-                    <p className="text-primary font-semibold">Store Hours: 10:00 AM – 10:00 PM (Mon-Sun)</p>
+                    <p className="text-primary font-semibold">Store Hours: 10:00 AM – 6:00 PM (Mon-Sun)</p>
                   </div>
                   <button
                     onClick={handleReset}

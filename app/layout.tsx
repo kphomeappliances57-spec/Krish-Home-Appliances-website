@@ -82,7 +82,7 @@ const jsonLd = {
     "longitude": 72.822227    
   },
   "hasMap": "https://maps.google.com/?q=19.405945,72.822227",
-  "openingHours": "Mo-Su 10:00-22:00",
+  "openingHours": "Mo-Su 10:00-18:00",
   "priceRange": "₹₹",
   "paymentAccepted": ["Cash", "UPI", "Bank Transfer"],
   "currenciesAccepted": "INR",

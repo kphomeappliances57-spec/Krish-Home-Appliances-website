@@ -86,7 +86,7 @@ npm run start
 ## 📍 Business Information
 
 - **Store Address**: Shop No 1, D Wing, Kanti Avenue, Next to Capital Mall, Nalasopara East, Maharashtra 401208
-- **Operational Hours**: Monday – Sunday (10:00 AM – 10:00 PM)
+- **Operational Hours**: Monday – Sunday (10:00 AM – 6:00 PM)
 - **Primary Phone / WhatsApp**: +91 9867392552
 - **Email**: Kphomeappliances57@gmail.com
 - **Service Coverage**: Nalasopara, Vasai, Virar, Mira Road, Bhayandar, Dahisar, Andheri

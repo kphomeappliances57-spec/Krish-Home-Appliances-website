@@ -119,7 +119,7 @@ export default function OGImage() {
               Kanti Avenue, Nalasopara East, Maharashtra 401208
             </div>
             <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.5)' }}>
-              Open 7 Days • 10 AM – 10 PM
+              Open 7 Days • 10 AM – 6 PM
             </div>
           </div>
           <div

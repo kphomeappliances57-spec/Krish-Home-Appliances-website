@@ -229,7 +229,7 @@ export default function AdminPage() {
     req.items.forEach((item, idx) => {
       msg += `${idx + 1}. ${item.productName} (${item.quantity} ${item.unit})\n`;
     });
-    msg += `\nYour order is ready for Store Pickup at Kanti Avenue, Nalasopara East. Store hours: 10 AM - 10 PM.`;
+    msg += `\nYour order is ready for Store Pickup at Kanti Avenue, Nalasopara East. Store hours: 10 AM - 6 PM.`;
     window.open(`https://wa.me/${req.customerPhone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
